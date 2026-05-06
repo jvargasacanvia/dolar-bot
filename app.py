@@ -19,14 +19,21 @@ client = Client(ACCOUNT_SID, AUTH_TOKEN, http_client=http_client)
 FILE = "ultimo_valor.txt"
 
 def obtener_dolar():
+    import requests
+    import re
+
     url = "https://www.google.com/search?q=dolar+peru"
     headers = {"User-Agent": "Mozilla/5.0"}
-    r = requests.get(url, headers=headers)
-    soup = BeautifulSoup(r.text, "html.parser")
 
-    # Google suele tener este formato (puede cambiar)
-    valor = soup.find("span", class_="DFlfde")
-    return float(valor.text.replace(",", "."))
+    r = requests.get(url, headers=headers)
+    
+    # Buscar número tipo 3.75 en todo el HTML
+    match = re.search(r"\d\.\d{2}", r.text)
+
+    if match:
+        return float(match.group())
+    else:
+        raise Exception("No se pudo obtener el dólar")
 
 def leer_anterior():
     if not os.path.exists(FILE):
