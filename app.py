@@ -19,21 +19,22 @@ client = Client(ACCOUNT_SID, AUTH_TOKEN, http_client=http_client)
 FILE = "ultimo_valor.txt"
 
 def obtener_dolar():
-    import requests
-    import re
+    url = "https://api.exchangerate.host/latest?base=USD&symbols=PEN"
 
-    url = "https://www.google.com/search?q=dolar+peru"
-    headers = {"User-Agent": "Mozilla/5.0"}
-
-    r = requests.get(url, headers=headers)
+    response = requests.get(url, timeout=10)
     
-    # Buscar número tipo 3.75 en todo el HTML
-    match = re.search(r"\d\.\d{2}", r.text)
+    if response.status_code != 200:
+        print("Error HTTP:", response.status_code)
+        return None
 
-    if match:
-        return float(match.group())
-    else:
-        raise Exception("No se pudo obtener el dólar")
+    data = response.json()
+
+    try:
+        precio = data["rates"]["PEN"]
+        return precio
+    except Exception as e:
+        print("Error parseando JSON:", e)
+        return None
 
 def leer_anterior():
     if not os.path.exists(FILE):
