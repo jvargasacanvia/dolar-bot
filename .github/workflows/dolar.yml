@@ -27,3 +27,5 @@ jobs:
           TWILIO_TOKEN: ${{ secrets.TWILIO_TOKEN }}
           TO_NUMBER: ${{ secrets.TO_NUMBER }}
         run: python app.py
+
+# trigger
