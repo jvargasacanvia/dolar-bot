@@ -57,7 +57,7 @@ def main():
     print(f"Actual: {actual} | Anterior: {anterior}")
 
     if anterior is None or actual != anterior:
-        mensaje = f"💸 Dólar Perú: {actual}"
+        mensaje = f"💵 Dólar hoy en Perú: {actual:.3f} PEN"
         enviar_whatsapp(mensaje)
         guardar(actual)
 
