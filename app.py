@@ -19,25 +19,18 @@ client = Client(ACCOUNT_SID, AUTH_TOKEN, http_client=http_client)
 FILE = "ultimo_valor.txt"
 
 def obtener_dolar():
-    url = "https://api.exchangerate.host/latest?base=USD&symbols=PEN"
+    url = "https://open.er-api.com/v6/latest/USD"
 
     response = requests.get(url, timeout=10)
 
-    # 👇 AQUÍ VA EL DEBUG (justo después del request)
     print("Status:", response.status_code)
-    print("Response:", response.text)
-
-    if response.status_code != 200:
-        print("Error HTTP:", response.status_code)
-        return None
+    data = response.json()
+    print("Response:", data)
 
     try:
-        data = response.json()
-        precio = data["rates"]["PEN"]
-        return precio
-
+        return data["rates"]["PEN"]
     except Exception as e:
-        print("Error parseando JSON:", e)
+        print("Error leyendo rates:", e)
         return None
 
 def leer_anterior():
