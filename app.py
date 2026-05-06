@@ -22,16 +22,20 @@ def obtener_dolar():
     url = "https://api.exchangerate.host/latest?base=USD&symbols=PEN"
 
     response = requests.get(url, timeout=10)
-    
+
+    # 👇 AQUÍ VA EL DEBUG (justo después del request)
+    print("Status:", response.status_code)
+    print("Response:", response.text)
+
     if response.status_code != 200:
         print("Error HTTP:", response.status_code)
         return None
 
-    data = response.json()
-
     try:
+        data = response.json()
         precio = data["rates"]["PEN"]
         return precio
+
     except Exception as e:
         print("Error parseando JSON:", e)
         return None
